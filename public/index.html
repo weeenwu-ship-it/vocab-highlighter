@@ -274,7 +274,7 @@ function showPage(name) {
 }
 
 // ===== Image Compression =====
-function compressImage(file, maxSize = 1280, quality = 0.8) {
+function compressImage(file, maxSize = 2048, quality = 0.85) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -355,13 +355,11 @@ $('submit-btn').addEventListener('click', async () => {
   try {
     const base64 = await compressImage(selectedFile);
 
-    const prompt = `请仔细观察这张英语单词表的图片。图片中有很多英文单词排列成列表，其中部分单词旁边有荧光笔高亮、彩色标记、打勾(✓)或其他手写痕迹。
+    const prompt = `看这张英语试卷照片。有些英文单词被荧光笔涂过了（单词上有一层彩色覆盖，可能是粉红色、黄色、绿色等）。
 
-你的任务：找出图片中所有带有任何标记痕迹的英文单词。标记包括：黄色/绿色/粉色高亮、勾号、圆圈、下划线、任何颜色的笔迹痕迹。
+请找出所有被荧光笔标记的单词。从试卷顶部开始，一行一行往下仔细看，列出每一个被彩色荧光笔标记覆盖的英文单词。被标记的单词可能有15-30个，请不要遗漏。
 
-注意：这张图片中有大量被标记的单词（可能有20-50个），请务必全部找出，不要遗漏。逐列、逐行仔细扫描整张图片。
-
-为每个单词提供：音标（IPA）、词性、中文释义。
+为每个单词提供：音标（IPA）、词性（n./v./adj./adv.等）、中文释义（最常用的1-2个含义）。
 
 输出纯JSON格式，不要其他文字：
 {"words": [{"word": "example", "phonetic": "/ɪɡˈzæmpl/", "pos": "n.", "meaning": "例子"}]}
