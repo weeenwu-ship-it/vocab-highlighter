@@ -7,25 +7,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-  if (!GEMINI_API_KEY) {
+  const BAIDU_API_KEY = process.env.BAIDU_API_KEY;
+  if (!BAIDU_API_KEY) {
     return res.status(500).json({ error: 'API key not configured' });
   }
 
   try {
     const body = req.body;
 
-    // Forward to Google Gemini API (OpenAI-compatible endpoint)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`,
+      'https://qianfan.baidubce.com/v2/chat/completions',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GEMINI_API_KEY}`,
+          'Authorization': `Bearer ${BAIDU_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gemini-2.0-flash',
+          model: body.model || 'ernie-4.5-turbo-vl',
           messages: body.messages,
           max_tokens: body.max_tokens || 16000,
           temperature: body.temperature ?? 0,
